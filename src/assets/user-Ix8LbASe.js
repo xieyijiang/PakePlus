@@ -1,0 +1,8 @@
+
+/**
+ * 由 Fantastic-admin 提供技术支持
+ * Powered by Fantastic-admin
+ * https://fantastic-admin.hurui.me
+ */
+  
+import{h as e}from"./auth-DgSDzHAK.js";function t(e){return{name:e.name.trim(),username:e.username.trim(),nickname:e.nickname.trim(),email:e.email.trim().toLowerCase(),role:e.role,password:e.password}}async function n(t){let n=t.keyword?.trim(),r=t.searchField??`name`,i={limit:t.pageSize,offset:(t.page-1)*t.pageSize,sortBy:`createdAt`,sortDirection:`desc`};n&&(r===`email`||r===`name`?(i.searchValue=n,i.searchField=r,i.searchOperator=`contains`):(i.filterValue=n,i.filterField=r,i.filterOperator=`contains`));let a=await e.admin.listUsers({query:i});return{list:a.users,total:a.total}}function r(n){let r=t(n);return e.admin.createUser({email:r.email,password:r.password,name:r.name,role:r.role,data:{username:r.username,displayUsername:r.username,nickname:r.nickname}})}async function i(n,r){let i=t(r),a={};return i.name!==n.name&&(a.name=i.name),i.email!==n.email.toLowerCase()&&(a.email=i.email),i.nickname!==(n.nickname??``)&&(a.nickname=i.nickname),i.role!==(n.role??`user`)&&(a.role=i.role),i.username!==(n.username??``)&&(a.username=i.username,a.displayUsername=i.username),Object.keys(a).length===0?!1:(await e.admin.updateUser({userId:n.id,data:a}),!0)}function a(t){return e.admin.removeUser({userId:t})}function o(t,n){let r=n.banReason.trim();return e.admin.banUser({userId:t,...r&&{banReason:r},...n.banExpiresIn>0&&{banExpiresIn:n.banExpiresIn}})}function s(t){return e.admin.unbanUser({userId:t})}async function c(){return(await e.getSession())?.user.id??``}var l={listUsers:n,createUser:r,updateUser:i,removeUser:a,banUser:o,unbanUser:s,getCurrentUserId:c};export{l as t};
